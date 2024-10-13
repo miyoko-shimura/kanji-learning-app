@@ -3,7 +3,7 @@ import pandas as pd
 import random
 
 def main():
-    st.title("フレーズ読みクイズアプリ")
+    st.title("秋の漢字コンクールの読みクイズ")
 
     # CSVデータを読み込む
     if 'data' not in st.session_state:
@@ -34,7 +34,8 @@ def main():
     else:
         # 問題を表示
         st.header(f"フレーズ: {st.session_state.current_phrase}")
-        st.subheader("このフレーズの読み方は？")
+        st.subheader("この漢字を読めましたか？")
+        st.read("")
 
         # 自己採点ボタン
         col1, col2 = st.columns(2)
