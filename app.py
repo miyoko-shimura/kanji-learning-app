@@ -3,7 +3,7 @@ import pandas as pd
 import random
 
 def main():
-    st.title("漢字コンクール読みクイズアプリ")
+    st.title("フレーズ読みクイズアプリ")
 
     # CSVデータを読み込む
     if 'data' not in st.session_state:
@@ -22,24 +22,34 @@ def main():
     if st.session_state.current_phrase is None:
         st.session_state.current_phrase = new_question()
 
-    # 問題を表示
-    st.header(f"フレーズ: {st.session_state.current_phrase}")
-    st.subheader("このフレーズの読み方は？")
+    # 30問終了後のメッセージ
+    if st.session_state.question_count >= 30:
+        st.success("30問完了しました！おつかれさまでした。")
+        if st.button("最初からやり直す"):
+            st.session_state.current_phrase = None
+            st.session_state.question_count = 0
+            st.session_state.correct_count = 0
+            st.session_state.incorrect_count = 0
+            st.experimental_rerun()
+    else:
+        # 問題を表示
+        st.header(f"フレーズ: {st.session_state.current_phrase}")
+        st.subheader("このフレーズの読み方は？")
 
-    # 自己採点ボタン
-    col1, col2 = st.columns(2)
-    with col1:
-        if st.button("正解"):
-            st.session_state.correct_count += 1
-            st.session_state.question_count += 1
-            st.session_state.current_phrase = new_question()
-            st.experimental_rerun()
-    with col2:
-        if st.button("不正解"):
-            st.session_state.incorrect_count += 1
-            st.session_state.question_count += 1
-            st.session_state.current_phrase = new_question()
-            st.experimental_rerun()
+        # 自己採点ボタン
+        col1, col2 = st.columns(2)
+        with col1:
+            if st.button("正解"):
+                st.session_state.correct_count += 1
+                st.session_state.question_count += 1
+                st.session_state.current_phrase = new_question()
+                st.experimental_rerun()
+        with col2:
+            if st.button("不正解"):
+                st.session_state.incorrect_count += 1
+                st.session_state.question_count += 1
+                st.session_state.current_phrase = new_question()
+                st.experimental_rerun()
 
     # 統計を表示
     st.sidebar.header("統計")
@@ -47,5 +57,5 @@ def main():
     st.sidebar.write(f"正解数: {st.session_state.correct_count}")
     st.sidebar.write(f"不正解数: {st.session_state.incorrect_count}")
 
-    # 30問終了後のメッセージ
-    if st.session_state.question_count >= 30:
+if __name__ == "__main__":
+    main()
