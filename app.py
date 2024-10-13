@@ -18,10 +18,9 @@ def main():
     def new_question():
         return random.choice(st.session_state.data['フレーズ'].tolist())
 
-    # 初回または「次の問題」ボタンが押されたときに新しい問題を選択
-    if st.session_state.current_phrase is None or st.button('次の問題'):
+    # 初回または再開時に新しい問題を選択
+    if st.session_state.current_phrase is None:
         st.session_state.current_phrase = new_question()
-        st.session_state.question_count += 1
 
     # 問題を表示
     st.header(f"フレーズ: {st.session_state.current_phrase}")
@@ -32,13 +31,15 @@ def main():
     with col1:
         if st.button("正解"):
             st.session_state.correct_count += 1
-            st.session_state.current_phrase = new_question()
             st.session_state.question_count += 1
+            st.session_state.current_phrase = new_question()
+            st.experimental_rerun()
     with col2:
         if st.button("不正解"):
             st.session_state.incorrect_count += 1
-            st.session_state.current_phrase = new_question()
             st.session_state.question_count += 1
+            st.session_state.current_phrase = new_question()
+            st.experimental_rerun()
 
     # 統計を表示
     st.sidebar.header("統計")
@@ -48,13 +49,3 @@ def main():
 
     # 30問終了後のメッセージ
     if st.session_state.question_count >= 30:
-        st.success("30問完了しました！おつかれさまでした。")
-        if st.button("最初からやり直す"):
-            st.session_state.current_phrase = None
-            st.session_state.question_count = 0
-            st.session_state.correct_count = 0
-            st.session_state.incorrect_count = 0
-            st.experimental_rerun()
-
-if __name__ == "__main__":
-    main()
