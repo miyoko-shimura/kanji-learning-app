@@ -2,55 +2,57 @@ import streamlit as st
 import pandas as pd
 import random
 
+def load_data():
+    return pd.read_csv('kanji_data.csv')
+
+def get_new_question(data):
+    return random.choice(data['フレーズ'].tolist())
+
 def main():
-    st.title("秋の漢字コンクールの読みクイズ")
+    st.title("フレーズ読みクイズアプリ")
 
-    # CSVデータを読み込む
+    # 初期化
     if 'data' not in st.session_state:
-        data = pd.read_csv('kanji_data.csv')
-        st.session_state.data = data
-        st.session_state.current_phrase = None
+        st.session_state.data = load_data()
+    if 'current_phrase' not in st.session_state:
+        st.session_state.current_phrase = get_new_question(st.session_state.data)
+    if 'question_count' not in st.session_state:
         st.session_state.question_count = 0
+    if 'correct_count' not in st.session_state:
         st.session_state.correct_count = 0
+    if 'incorrect_count' not in st.session_state:
         st.session_state.incorrect_count = 0
-
-    # 新しい問題を選択する関数
-    def new_question():
-        return random.choice(st.session_state.data['フレーズ'].tolist())
-
-    # 初回または再開時に新しい問題を選択
-    if st.session_state.current_phrase is None:
-        st.session_state.current_phrase = new_question()
 
     # 30問終了後のメッセージ
     if st.session_state.question_count >= 30:
         st.success("30問完了しました！おつかれさまでした。")
         if st.button("最初からやり直す"):
-            st.session_state.current_phrase = None
+            st.session_state.current_phrase = get_new_question(st.session_state.data)
             st.session_state.question_count = 0
             st.session_state.correct_count = 0
             st.session_state.incorrect_count = 0
-            st.experimental_rerun()
     else:
         # 問題を表示
         st.header(f"フレーズ: {st.session_state.current_phrase}")
-        st.subheader("この漢字を読めましたか？")
-        st.write("")
+        st.subheader("このフレーズの読み方は？")
 
         # 自己採点ボタン
         col1, col2 = st.columns(2)
+        
+        def update_state(is_correct):
+            if is_correct:
+                st.session_state.correct_count += 1
+            else:
+                st.session_state.incorrect_count += 1
+            st.session_state.question_count += 1
+            st.session_state.current_phrase = get_new_question(st.session_state.data)
+
         with col1:
             if st.button("正解"):
-                st.session_state.correct_count += 1
-                st.session_state.question_count += 1
-                st.session_state.current_phrase = new_question()
-                st.experimental_rerun()
+                update_state(True)
         with col2:
             if st.button("不正解"):
-                st.session_state.incorrect_count += 1
-                st.session_state.question_count += 1
-                st.session_state.current_phrase = new_question()
-                st.experimental_rerun()
+                update_state(False)
 
     # 統計を表示
     st.sidebar.header("統計")
