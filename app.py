@@ -35,7 +35,7 @@ def main():
         # 問題を表示
         st.header(f"フレーズ: {st.session_state.current_phrase}")
         st.subheader("この漢字を読めましたか？")
-        st.read("")
+        st.write("")
 
         # 自己採点ボタン
         col1, col2 = st.columns(2)
