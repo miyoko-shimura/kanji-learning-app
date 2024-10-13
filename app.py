@@ -56,6 +56,7 @@ def main():
                 update_state(False)
 
     # 統計を表示
+    st.write("")
     st.write(f"問題数: {st.session_state.question_count}/15")        
     st.write(f"正解数: {st.session_state.correct_count}")
     st.write(f"不正解数: {st.session_state.incorrect_count}")
