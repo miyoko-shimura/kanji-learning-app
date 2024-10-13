@@ -3,7 +3,7 @@ import pandas as pd
 import random
 
 def main():
-    st.title("フレーズ読みクイズアプリ")
+    st.title("漢字コンクール読みクイズアプリ")
 
     # CSVデータを読み込む
     if 'data' not in st.session_state:
