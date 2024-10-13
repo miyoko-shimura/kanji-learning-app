@@ -9,7 +9,7 @@ def get_new_question(data):
     return random.choice(data['フレーズ'].tolist())
 
 def main():
-    st.title("フレーズ読みクイズアプリ")
+    st.title("小５秋の漢字コンクール 読みクイズ")
 
     # 初期化
     if 'data' not in st.session_state:
@@ -33,8 +33,8 @@ def main():
             st.session_state.incorrect_count = 0
     else:
         # 問題を表示
-        st.header(f"フレーズ: {st.session_state.current_phrase}")
-        st.subheader("このフレーズの読み方は？")
+        st.header(f"問題: {st.session_state.current_phrase}")
+        st.subheader("この文章を読むことができましたか？")
 
         # 自己採点ボタン
         col1, col2 = st.columns(2)
