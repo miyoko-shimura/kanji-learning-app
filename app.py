@@ -9,7 +9,7 @@ def get_new_question(data):
     return random.choice(data['フレーズ'].tolist())
 
 def main():
-    st.title("漢字コンクール 読みクイズ")
+    st.title("漢字コンクール読みクイズ")
     
     # 初期化 
     if 'data' not in st.session_state:
