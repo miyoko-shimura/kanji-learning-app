@@ -34,6 +34,7 @@ def main():
     else:
         # 問題を表示
         st.header(f"問題: {st.session_state.current_phrase}")
+        st.write("")
         st.subheader("この文章を読むことができましたか？")
 
         # 自己採点ボタン
